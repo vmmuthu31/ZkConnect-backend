@@ -43,6 +43,10 @@ app.get("/", (req, res) => {
   });
 });
 
+app.get("/", (req, res) => {
+  res.send("Hi");
+});
+
 // Start the server
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
