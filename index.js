@@ -37,6 +37,12 @@ const bidRoutes = require("./routes/bids"); // Add this line
 app.use("/offers", offerRoutes); // Add this line
 app.use("/bids", bidRoutes);
 
+app.get("/", (req, res) => {
+  res.json({
+    message: "🦄🌈✨👋🌎🌍🌏✨🌈🦄",
+  });
+});
+
 // Start the server
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
