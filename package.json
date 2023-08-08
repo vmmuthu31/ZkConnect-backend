@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "build": "",
+    "build": "tsc",
     "install": "npm install --legacy-peer-deps",
     "test": "echo \"Error: no test specified\" && exit 1",
     "vercel-build": "echo hello"
