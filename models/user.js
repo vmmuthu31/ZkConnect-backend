@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: { type: String, enum: ["user", "admin", "company"], default: "user" },
+  role: { type: String, enum: ["user", "company"], default: "user" },
   isCompany: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
   lastLogin: { type: Date },
@@ -24,32 +24,115 @@ const userSchema = new mongoose.Schema({
       message: "Company name is required for company role.",
     },
   },
-  offers: [
+  jobApplications: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "JobApplication" },
+  ],
+
+  userregister: [
     {
-      status: {
+      firstName: { type: String },
+      lastName: { type: String },
+      location: { type: String },
+      contactNumber: { type: String },
+      resume: { type: String },
+      profileBio: { type: String },
+      selectedButton: { type: String },
+      selectedSkills: { type: String },
+    },
+  ],
+  companyregister: [
+    {
+      CompanyNumber: {
         type: String,
-        enum: ["created", "accepted", "rejected"],
-        default: "created",
-      },
-      projectId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Project",
-        required: true,
-      },
-      projectName: { type: String, required: true },
-      period: { type: String, required: true },
-      offerRate: { type: Number, required: true },
-      biddingRate: { type: Number, required: true },
-      createdAt: { type: Date, default: Date.now },
-      bids: [
-        {
-          bidCreator: { type: String, required: true },
-          bidRate: { type: Number, required: true },
-          comments: { type: String, required: true },
-          status: { type: String, required: true },
-          createdAt: { type: Date, default: Date.now },
+        validate: {
+          validator: function (value) {
+            // Validate CompanyNumber based on role
+            if (this.role === "company") {
+              return value && value.trim().length > 0;
+            }
+            return true; // Return true for non-company roles
+          },
+          message: "Company number is required for company role.",
         },
-      ],
+      },
+      CompanyLinkedIn: {
+        type: String,
+        validate: {
+          validator: function (value) {
+            // Validate CompanyNumber based on role
+            if (this.role === "company") {
+              return value && value.trim().length > 0;
+            }
+            return true; // Return true for non-company roles
+          },
+          message: "Company number is required for company role.",
+        },
+      },
+      CompanyLocation: {
+        type: String,
+        validate: {
+          validator: function (value) {
+            // Validate CompanyNumber based on role
+            if (this.role === "company") {
+              return value && value.trim().length > 0;
+            }
+            return true; // Return true for non-company roles
+          },
+          message: "Company number is required for company role.",
+        },
+      },
+      Employees: {
+        type: String,
+        validate: {
+          validator: function (value) {
+            // Validate CompanyNumber based on role
+            if (this.role === "company") {
+              return value && value.trim().length > 0;
+            }
+            return true; // Return true for non-company roles
+          },
+          message: "Company number is required for company role.",
+        },
+      },
+      StartingYear: {
+        type: String,
+        validate: {
+          validator: function (value) {
+            // Validate CompanyNumber based on role
+            if (this.role === "company") {
+              return value && value.trim().length > 0;
+            }
+            return true; // Return true for non-company roles
+          },
+          message: "Company number is required for company role.",
+        },
+      },
+      CompanyProfile: {
+        type: String,
+        validate: {
+          validator: function (value) {
+            // Validate CompanyNumber based on role
+            if (this.role === "company") {
+              return value && value.trim().length > 0;
+            }
+            return true; // Return true for non-company roles
+          },
+          message: "Company number is required for company role.",
+        },
+      },
+      Logo: {
+        type: String,
+        validate: {
+          validator: function (value) {
+            // Validate CompanyNumber based on role
+            if (this.role === "company") {
+              return value && value.trim().length > 0;
+            }
+            return true; // Return true for non-company roles
+          },
+          message: "Company number is required for company role.",
+        },
+      },
     },
   ],
 });

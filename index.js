@@ -3,12 +3,15 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+var cors = require("cors");
+const jobPostRoutes = require("./routes/jobRoutes"); // Import job post routes
+const jobApplicationRoutes = require("./routes/jobApplication");
 
 const app = express();
+app.use(cors()); // Use this after the variable declaration
 
 // Connected to your MongoDB database
-const dbURI =
-  "mongodb+srv://admin:admin@cluster0.rxnpu.mongodb.net/carbon-relay";
+const dbURI = "mongodb+srv://admin:admin@cluster0.rxnpu.mongodb.net/ZKConnt";
 mongoose
   .connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
@@ -26,25 +29,14 @@ app.use(express.json());
 const authRoutes = require("./routes/auth");
 app.use("/auth", authRoutes);
 
-const placeBidRoute = require("./routes/placeBid"); // Import the placeBid route
-app.use("/placebid", placeBidRoute);
+app.use("/jobPosts", jobPostRoutes);
 
-const offerRoutes = require("./routes/offers"); // Add this line
-const bidRoutes = require("./routes/bids"); // Add this line
-
-// ... Other middleware and configurations ...
-
-app.use("/offers", offerRoutes); // Add this line
-app.use("/bids", bidRoutes);
+app.use("/jobApplications", jobApplicationRoutes);
 
 app.get("/", (req, res) => {
   res.json({
-    message: "🦄🌈✨👋🌎🌍🌏✨🌈🦄",
+    message: "🦄🌈✨👋🌎ZK-Connect Backend API🌏✨🌈🦄",
   });
-});
-
-app.get("/", (req, res) => {
-  res.send("Hi");
 });
 
 // Start the server

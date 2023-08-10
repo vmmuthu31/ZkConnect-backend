@@ -10,12 +10,7 @@ const router = express.Router();
 // Signup route
 router.post("/signup", async (req, res) => {
   try {
-    const { role, email, username, password, confirmPassword } = req.body;
-
-    // Check if the passwords match
-    if (password !== confirmPassword) {
-      return res.status(400).json({ message: "Passwords do not match" });
-    }
+    const { role, email, username, password } = req.body;
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -100,49 +95,89 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// Create Offer route
-router.post("/createOffer", verifyToken, async (req, res) => {
+router.post("/registerUser", verifyToken, async (req, res) => {
   try {
-    const { projectId, period, offerRate, biddingRate } = req.body;
+    const {
+      selectedButton,
+      selectedSkills,
+      firstName,
+      lastName,
+      email,
+      location,
+      contactNumber,
+      resume,
+      profileBio,
+    } = req.body;
 
-    // Get the user from the token
+    // Find the user by their ID (assuming req.userId holds the ID)
     const user = await User.findById(req.userId);
 
-    // Check if the user is allowed to create offers (individuals and companies can create offers)
-    if (!user || !(user.role === "user" || user.role === "company")) {
-      return res.status(403).json({ message: "Unauthorized to create offers" });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
 
-    // Determine the offer creator (user or company) and set the projectName field accordingly
-    let projectName;
-    if (user.role === "company") {
-      // If the user is a company, set the projectName to the company's companyName
-      projectName = user.companyName;
-    } else {
-      // If the user is not a company, set the projectName to a custom value (e.g., "Individual Offer")
-      projectName = "Individual Offer";
-    }
+    // Push the user registration data into the userregister array
+    user.userregister.push({
+      selectedButton,
+      selectedSkills,
+      firstName,
+      lastName,
+      email,
+      location,
+      contactNumber,
+      resume,
+      profileBio,
+    });
 
-    // Create the offer object
-    const offer = {
-      status: "created",
-      projectId,
-      projectName,
-      period,
-      offerRate,
-      biddingRate,
-      createdAt: new Date(),
-    };
-
-    // Add the offer to the user's offers array
-    user.offers.push(offer);
+    // Save the updated user to the database
     await user.save();
 
-    res.status(201).json({ message: "Offer created successfully", offer });
+    res.status(201).json({ message: "User registered successfully", user });
   } catch (err) {
     res
       .status(500)
-      .json({ message: "Error creating offer", error: err.message });
+      .json({ message: "Error registering user", error: err.message });
+  }
+});
+
+router.post("/registerCompany", verifyToken, async (req, res) => {
+  try {
+    const {
+      CompanyNumber,
+      CompanyLinkedIn,
+      CompanyLocation,
+      Employees,
+      StartingYear,
+      CompanyProfile,
+      Logo,
+    } = req.body;
+
+    // Find the user by their ID (assuming req.userId holds the ID)
+    const user = await User.findById(req.userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Push the company registration data into the companyregister array
+    user.companyregister.push({
+      CompanyNumber,
+      CompanyLinkedIn,
+      CompanyLocation,
+      Employees,
+      StartingYear,
+      CompanyProfile,
+      Logo,
+    });
+
+    // Save the updated user to the database
+    await user.save();
+
+    res.status(201).json({ message: "Company registered successfully", user });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Error registering company", error: err.message });
   }
 });
 
