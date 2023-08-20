@@ -230,7 +230,7 @@ router.post("/registerotp", verifyToken, async (req, res) => {
       from: "zkconnectt@gmail.com",
       to: user.email,
       subject: "OTP for ZKConnect Account Verification",
-      text: `Hi there!\n\nThanks for using zkconnect. Your OTP for account verification is: ${otp}\n\nWe're excited to have you on board and look forward to your valuable registration.\n\nBest regards,\nThe zkconnect Team`,
+      text: `Hi there!\n\nThanks for using ZKConnect. Your OTP for account verification is: ${otp}\n\nWe're excited to have you on board and look forward to your valuable registration.\n\nBest regards,\nThe ZKConnect Team`,
     };
 
     await transporter.sendMail(mailOptions);
