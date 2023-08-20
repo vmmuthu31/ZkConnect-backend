@@ -216,13 +216,13 @@ router.post("/registerotp", async (req, res) => {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "your_email@gmail.com", // Your Gmail email address
-        pass: "your_password", // Your Gmail password or app password
+        user: "zkconnectt@gmail.com", // Your Gmail email address
+        pass: "Kutta@1707", // Your Gmail password or app password
       },
     });
 
     const mailOptions = {
-      from: "your_email@gmail.com",
+      from: "zkconnectt@gmail.com",
       to: user.email,
       subject: "OTP for Account Verification",
       text: `Your OTP for account verification is: ${otp}`,
